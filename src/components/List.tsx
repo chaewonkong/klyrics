@@ -1,11 +1,28 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ListItem } from "./ListItem"
 import { Category } from "./Category"
+import { Artist } from "@/interfaces/artists"
+import { FetchSongsResponse, Song } from "@/interfaces/songs"
+import axios from "axios"
+import useSWR from 'swr'
+// import { fetcher } from "@/common/fetcher"
 
-export const List = () => {
-    const [activeArtist, setActiveArtist] = useState("BTS")
-    const artists = ["BTS", "BLACK PINK", "ENHYPEN", "EXO", "NEW JEANS"]
+interface IProps {
+    artists: Artist[]
+    apiBaseUrl: string;
+}
 
+export const List = ({ artists, apiBaseUrl }: IProps) => {
+    const [activeArtist, setActiveArtist] = useState(artists[0])
+    const fetcher = (url: string) => fetch(url).then(r => r.json())
+
+    const { data, error, isLoading } = useSWR(`${apiBaseUrl}/artists/${activeArtist.id}/song/`, fetcher)
+
+    if (isLoading) {
+        return <div>Loading</div>
+    }
+
+    console.log(data)
 
     return (
         <section className="w-full">
@@ -18,4 +35,11 @@ export const List = () => {
             </div>
         </section>
     )
+}
+
+export const getServerSideProps = async () => {
+    const res = await axios.get<any, FetchSongsResponse>(`${process.env.API_BASE_URL}/artists`)
+    const { songs } = res.data
+
+    return { props: { songs } }
 }

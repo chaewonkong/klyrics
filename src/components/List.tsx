@@ -5,7 +5,7 @@ import { Artist } from "@/interfaces/artists"
 import { FetchSongsResponse, Song } from "@/interfaces/songs"
 import axios from "axios"
 import useSWR from 'swr'
-// import { fetcher } from "@/common/fetcher"
+import { fetcher } from "@/common/fetcher"
 
 interface IProps {
     artists: Artist[]
@@ -14,15 +14,13 @@ interface IProps {
 
 export const List = ({ artists, apiBaseUrl }: IProps) => {
     const [activeArtist, setActiveArtist] = useState(artists[0])
-    const fetcher = (url: string) => fetch(url).then(r => r.json())
 
-    const { data, error, isLoading } = useSWR(`${apiBaseUrl}/artists/${activeArtist.id}/song/`, fetcher)
+    const { data, error, isLoading } = useSWR(`${apiBaseUrl}/artists/${activeArtist.id}/song`, fetcher)
 
     if (isLoading) {
         return <div>Loading</div>
     }
 
-    console.log(data)
 
     return (
         <section className="w-full">

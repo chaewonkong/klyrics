@@ -21,6 +21,8 @@ export const List = ({ artists, apiBaseUrl }: IProps) => {
         return <div>Loading</div>
     }
 
+    console.log(data)
+
 
     return (
         <section className="w-full">

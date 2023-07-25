@@ -12,17 +12,15 @@ interface IProps {
     apiBaseUrl: string;
 }
 
+
 export const List = ({ artists, apiBaseUrl }: IProps) => {
     const [activeArtist, setActiveArtist] = useState(artists[0])
 
-    const { data, error, isLoading } = useSWR(`${apiBaseUrl}/artists/${activeArtist.id}/song`, fetcher)
+    const { data, error, isLoading } = useSWR<FetchSongsResponse>(`${apiBaseUrl}/artists/${activeArtist.id}/song/`, fetcher)
 
     if (isLoading) {
         return <div>Loading</div>
     }
-
-    console.log(data)
-
 
     return (
         <section className="w-full">
@@ -30,16 +28,8 @@ export const List = ({ artists, apiBaseUrl }: IProps) => {
                 <Category setActive={setActiveArtist} artists={artists} activeArtist={activeArtist} />
             </div>
             <div className="w-full px-4">
-                <ListItem label="label" link="/" />
-                <ListItem label="label" link="/" />
+                {data ? data.songs.map(({ title, id }) => <ListItem key={id} label={title} link={`/song/${id}`} />) : null}
             </div>
         </section>
     )
-}
-
-export const getServerSideProps = async () => {
-    const res = await axios.get<any, FetchSongsResponse>(`${process.env.API_BASE_URL}/artists`)
-    const { songs } = res.data
-
-    return { props: { songs } }
 }

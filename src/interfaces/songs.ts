@@ -1,13 +1,9 @@
 export interface FetchSongsResponse {
-    data: {
-        songs: Song[]
-    }
+    songs: Song[]
 }
 
 export interface FetchSongResponse {
-    data: {
-        song: Song
-    }
+    data: Song
 }
 
 export interface Song {

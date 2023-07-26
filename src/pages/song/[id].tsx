@@ -1,13 +1,29 @@
+import { SongHeader } from "@/components/SongHeader";
 import { FetchSongResponse, FetchSongsResponse, Song } from "@/interfaces/songs"
 import axios from "axios"
+import { useRouter } from "next/router";
 
 interface IProps {
     song: Song
 }
 
+function getVideoId(url: string): string | null {
+    const urlObj = new URL(url)
+    const params = new URLSearchParams(urlObj.search);
+
+    return params.get("v")
+}
+
 export default function SongView({ song }: IProps) {
+    const youtubeSongId = getVideoId(song.youtube_link)
+    const youtubeLink = `https://youtube.com/embed/${youtubeSongId}`
+    const router = useRouter()
     return (
         <section>
+            <SongHeader title={song.title} onClick={() => router.back()} />
+            <div>
+                <iframe width="640" height="360" src={youtubeLink} title={song.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+            </div>
             <div>header</div>
             <div>{song.title}</div>
             <div>{song.youtube_link}</div>

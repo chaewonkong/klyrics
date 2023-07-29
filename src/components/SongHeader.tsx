@@ -4,7 +4,7 @@ interface IProps {
 }
 
 export const SongHeader = ({ title, onClick }: IProps) => (
-    <section className="w-full h-12 flex flex-row justify-between items-center">
+    <section className="w-full bg-[#fff] h-12 flex flex-row justify-between items-center">
         <a onClick={onClick} className="shrink-0 cursor-pointer">
             <img src="/arrow_left.svg" width={48} height={48} />
         </a>

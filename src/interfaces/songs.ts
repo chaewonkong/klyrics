@@ -18,5 +18,5 @@ export interface Song {
 
 export interface Translation {
     korean: string;
-    english_pronounciation: string;
+    english_pronunciation: string;
 }

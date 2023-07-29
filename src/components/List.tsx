@@ -18,6 +18,7 @@ export const List = ({ artists, apiBaseUrl }: IProps) => {
 
     const { data, error, isLoading } = useSWR<FetchSongsResponse>(`${apiBaseUrl}/artists/${activeArtist.id}/song/`, fetcher)
 
+
     if (isLoading) {
         return <div>Loading</div>
     }

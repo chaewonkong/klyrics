@@ -1,3 +1,4 @@
+import { Lyric } from "@/components/Lyric";
 import { SongHeader } from "@/components/SongHeader";
 import { FetchSongResponse, FetchSongsResponse, Song } from "@/interfaces/songs"
 import axios from "axios"
@@ -14,23 +15,25 @@ function getVideoId(url: string): string | null {
     return params.get("v")
 }
 
+// youtube size = 16:9
+// width / 16 * 9 = height
+// 100vw / 16 * 9
+
 export default function SongView({ song }: IProps) {
     const youtubeSongId = getVideoId(song.youtube_link)
     const youtubeLink = `https://youtube.com/embed/${youtubeSongId}`
     const router = useRouter()
     return (
-        <section>
-            <SongHeader title={song.title} onClick={() => router.back()} />
+        <section className="h-[100vh] overflow-hidden">
             <div>
-                <iframe width="640" height="360" src={youtubeLink} title={song.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                <SongHeader title={song.title} onClick={() => router.back()} />
+                <iframe className="w-full h-[calc((min(640px,100vw)/16)*9)]" src={youtubeLink} title={song.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
             </div>
-            <div>header</div>
-            <div>{song.title}</div>
-            <div>{song.youtube_link}</div>
+            <Lyric lyric={song.lyrics_data.translation} />
         </section>
     )
 }
-
+// TODO: width, height를 js로 결정해서 iframe에 제공
 const initialSong = {
     id: 0,
     artist_id: 0,

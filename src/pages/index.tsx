@@ -5,6 +5,7 @@ import { Title } from '@/components/Title'
 import axios from 'axios'
 import { Artist, FetchArtistsResponse } from '../interfaces/artists'
 import { useEffect, useLayoutEffect } from 'react'
+import { NextSeo } from 'next-seo'
 
 
 interface IProps {
@@ -17,13 +18,19 @@ export default function Home({ artists, apiBaseUrl }: IProps) {
 
 
   return (
-    <main className='w-full h-full py-6'>
-      <Header />
-      <div className='w-full h-3' />
-      <Card />
-      <Title text="Playlist" />
-      <List artists={artists} apiBaseUrl={apiBaseUrl} />
-    </main>
+    <>
+      <NextSeo
+        title="Klyrics"
+        description="Sing Korean songs with Korean pronunciation written in english alphabet"
+      />
+      <main className='w-full h-full py-6'>
+        <Header />
+        <div className='w-full h-3' />
+        <Card />
+        <Title text="Playlist" />
+        <List artists={artists} apiBaseUrl={apiBaseUrl} />
+      </main>
+    </>
   )
 }
 
